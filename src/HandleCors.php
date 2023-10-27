@@ -10,23 +10,23 @@ use think\Response;
 class HandleCors
 {
     /** @var string[] */
-    protected array $paths = [];
+    protected $paths = [];
     /** @var string[] */
-    protected array $allowedOrigins = [];
+    protected $allowedOrigins = [];
     /** @var string[] */
-    protected array $allowedOriginsPatterns = [];
+    protected $allowedOriginsPatterns = [];
     /** @var string[] */
-    protected array $allowedMethods = [];
+    protected $allowedMethods = [];
     /** @var string[] */
-    protected array $allowedHeaders = [];
+    protected $allowedHeaders = [];
     /** @var string[] */
-    private array  $exposedHeaders      = [];
-    protected bool $supportsCredentials = false;
-    protected ?int $maxAge              = 0;
+    private $exposedHeaders      = [];
+    protected $supportsCredentials = false;
+    protected $maxAge              = 0;
 
-    protected bool $allowAllOrigins = false;
-    protected bool $allowAllMethods = false;
-    protected bool $allowAllHeaders = false;
+    protected $allowAllOrigins = false;
+    protected $allowAllMethods = false;
+    protected $allowAllHeaders = false;
 
     public function __construct(Config $config)
     {
@@ -199,7 +199,7 @@ class HandleCors
 
     protected function hasMatchingPath(Request $request)
     {
-        $url = $request->baseUrl();
+        $url = $request->pathInfo();
         $url = trim($url, '/');
         if ($url === '') {
             $url = '/';
