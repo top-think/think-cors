@@ -37,6 +37,7 @@ class HandleCors
         $this->allowedOriginsPatterns = $options['allowed_origins_patterns'] ?? $this->allowedOriginsPatterns;
         $this->allowedMethods         = $options['allowed_methods'] ?? $this->allowedMethods;
         $this->allowedHeaders         = $options['allowed_headers'] ?? $this->allowedHeaders;
+        $this->exposedHeaders         = $options['exposed_headers'] ?? $this->exposedHeaders;
         $this->supportsCredentials    = $options['supports_credentials'] ?? $this->supportsCredentials;
 
         $maxAge = $this->maxAge;
@@ -44,9 +45,6 @@ class HandleCors
             $maxAge = $options['max_age'];
         }
         $this->maxAge = $maxAge === null ? null : (int) $maxAge;
-
-        $exposedHeaders       = $options['exposed_headers'] ?? $this->exposedHeaders;
-        $this->exposedHeaders = $exposedHeaders === false ? [] : $exposedHeaders;
 
         // Normalize case
         $this->allowedHeaders = array_map('strtolower', $this->allowedHeaders);
@@ -96,6 +94,7 @@ class HandleCors
             $this->configureAllowCredentials($response, $request);
             $this->configureAllowedMethods($response, $request);
             $this->configureAllowedHeaders($response, $request);
+            $this->configureExposedHeaders($response, $request);            
             $this->configureMaxAge($response, $request);
         }
 
@@ -141,6 +140,14 @@ class HandleCors
             $allowHeaders = implode(', ', $this->allowedHeaders);
         }
         $response->header(['Access-Control-Allow-Headers' => $allowHeaders]);
+    }
+
+    protected function configureExposedHeaders(Response $response, Request $request): void
+    {
+        if ($this->exposedHeaders) {
+            $exposeHeaders = implode(', ', $this->exposedHeaders);
+            $response->header(['Access-Control-Expose-Headers' => $exposeHeaders]);
+        }
     }
 
     protected function configureMaxAge(Response $response, Request $request): void
