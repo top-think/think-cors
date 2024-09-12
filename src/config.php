@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'paths'                    => [],
+    'paths'                    => ['*'],
     'allowed_origins'          => ['*'],
     'allowed_origins_patterns' => [],
     'allowed_methods'          => ['*'],
